@@ -1,0 +1,38 @@
+pipeline {
+    
+    agent any
+    
+    environment {
+        buildnum = currentBuild.getNumber()
+    }
+    
+    tools {
+         groovy 'groovy'
+         maven 'maven'
+         jdk 'jdk'
+    } //tools end 
+    
+    stages {
+        stage('Code Checkout') {
+            steps {
+              git branch: 'dock-br-1', url: 'https://github.com/ajit-t-5144/DevOps-Demo-WebApp.git'
+            }
+        }//checkout stage end
+        
+        stage('echo build num'){
+            steps{
+                echo " Build number is ${buildnum}"
+            }
+        }//echo end
+        
+        stage('Generate Package'){
+            steps{
+                sh 'mvn clean package'
+            }    
+            
+        }//generate end 
+        
+        
+    } //stages end
+    
+}//pipeline end
