@@ -4,6 +4,8 @@ pipeline {
     
     environment {
         buildnum = currentBuild.getNumber()
+        
+         dockerImagename = "ajit5144/devops-app-${buildnum}"
     }
     
     tools {
@@ -15,7 +17,7 @@ pipeline {
     stages {
         stage('Code Checkout') {
             steps {
-              git branch: 'dock-br-1', url: 'https://github.com/ajit-t-5144/DevOps-Demo-WebApp.git'
+              git branch: 'dock-br-2', url: 'https://github.com/ajit-t-5144/DevOps-Demo-WebApp.git'
             }
         }//checkout stage end
         
@@ -31,6 +33,28 @@ pipeline {
             }    
             
         }//generate end 
+        
+         stage(' Build Docker Image'){
+            steps{ 
+                 sh 'docker build -t ${dockerImagename} --pull=true /var/lib/jenkins/workspace/devops-training'
+                 //echo "${dockerImagename}"
+            } 
+            
+            
+         }//Docker build done  
+         stage(' Push to Docker Hub'){
+            steps{ 
+                withCredentials([string(credentialsId: 'docker-hub', variable: 'dockerhub')]) {
+                    sh "docker login -u ajit5144 -p ${dockerhub}"
+                 //echo "${dockerImagename}"
+                }
+                
+                sh "docker push ${dockerImagename}"
+                 
+            }
+       
+        }//Docker Push done
+        
         
         
     } //stages end
