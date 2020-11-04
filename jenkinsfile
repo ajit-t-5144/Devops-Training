@@ -7,7 +7,7 @@ pipeline {
         
          dockerImagename = "ajit5144/devops-app-${buildnum}"
          
-         dockerRun = "docker run -p 8081:8080 -d ${dockerImagename}"
+         dockerRun = "docker run -p 8081:8080 -p 5432:5432 -d ${dockerImagename}"
     }
     
     tools {
@@ -61,7 +61,7 @@ pipeline {
             steps{
         
             sshagent(['docker-c']) {
-                 sh "ssh -o StrictHostKeyChecking=no azureuser@137.116.36.146 ${dockerRun}"
+                 sh "ssh -o StrictHostKeyChecking=no azureuser@52.179.174.220 ${dockerRun}"
                 }
             }   
             
