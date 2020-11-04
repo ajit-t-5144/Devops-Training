@@ -17,7 +17,7 @@ pipeline {
     stages {
         stage('Code Checkout') {
             steps {
-              git branch: 'dock-br-2', url: 'https://github.com/ajit-t-5144/DevOps-Demo-WebApp.git'
+              git branch: 'main', url: 'https://github.com/ajit-t-5144/docker-war.git'
             }
         }//checkout stage end
         
@@ -26,11 +26,7 @@ pipeline {
                 echo " Build number is ${buildnum}"
             }
         }//echo end
-        
-        stage('Generate Package'){
-            steps{
-                sh 'mvn clean package'
-            }    
+
             
         }//generate end 
         
