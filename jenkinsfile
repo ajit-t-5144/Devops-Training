@@ -6,6 +6,8 @@ pipeline {
         buildnum = currentBuild.getNumber()
         
          dockerImagename = "ajit5144/devops-app-${buildnum}"
+         
+         dockerRun = "docker run -p 8081:8080 -d ${dockerImagename}"
     }
     
     tools {
@@ -54,6 +56,16 @@ pipeline {
             }
        
         }//Docker Push done
+        
+        stage('Run Container on Dev Server') {
+            steps{
+        
+            sshagent(['docker-c']) {
+                 sh "ssh -o StrictHostKeyChecking=no azureuser@137.116.36.146 ${dockerRun}"
+                }
+            }   
+            
+        }//Run container end 
         
         
         
